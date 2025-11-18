@@ -1,3 +1,4 @@
+
 import PageHeader from '@/components/dashboard/page-header';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
@@ -17,16 +18,16 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-import { users } from '@/lib/placeholder-data';
+import { nurses } from '@/lib/placeholder-data';
 import { MoreHorizontal, PlusCircle } from 'lucide-react';
 
-export default function UsersPage() {
+export default function NursesPage() {
   return (
     <>
-      <PageHeader title="Staff Management">
+      <PageHeader title="Nurses">
         <Button>
           <PlusCircle className="mr-2" />
-          Add Staff
+          Add Nurse
         </Button>
       </PageHeader>
       <Card>
@@ -35,28 +36,32 @@ export default function UsersPage() {
             <TableHeader>
               <TableRow>
                 <TableHead>Name</TableHead>
-                <TableHead className="hidden sm:table-cell">Email</TableHead>
-                <TableHead>Role</TableHead>
+                <TableHead className="hidden sm:table-cell">Department</TableHead>
+                <TableHead className="hidden md:table-cell">Status</TableHead>
                 <TableHead>
                   <span className="sr-only">Actions</span>
                 </TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
-              {users.map((user) => (
-                <TableRow key={user.id}>
+              {nurses.map((nurse) => (
+                <TableRow key={nurse.id}>
                   <TableCell>
                     <div className="flex items-center gap-3">
                       <Avatar className="hidden h-9 w-9 sm:flex">
-                        <AvatarImage src={user.avatarUrl} alt="Avatar" />
-                        <AvatarFallback>{user.name.charAt(0)}</AvatarFallback>
+                        <AvatarImage src={nurse.avatarUrl} alt="Avatar" />
+                        <AvatarFallback>{nurse.name.charAt(0)}</AvatarFallback>
                       </Avatar>
-                      <div className="font-medium">{user.name}</div>
+                      <div className="font-medium">{nurse.name}</div>
                     </div>
                   </TableCell>
-                  <TableCell className="hidden sm:table-cell">{user.email}</TableCell>
-                  <TableCell>
-                    <Badge variant="outline">{user.role}</Badge>
+                  <TableCell className="hidden sm:table-cell">
+                    {nurse.department}
+                  </TableCell>
+                  <TableCell className="hidden md:table-cell">
+                    <Badge variant={nurse.status === 'Active' ? 'secondary' : 'outline'}>
+                      {nurse.status}
+                    </Badge>
                   </TableCell>
                   <TableCell>
                     <DropdownMenu>
@@ -67,8 +72,9 @@ export default function UsersPage() {
                         </Button>
                       </DropdownMenuTrigger>
                       <DropdownMenuContent align="end">
-                        <DropdownMenuItem>Edit Role</DropdownMenuItem>
-                        <DropdownMenuItem>Remove User</DropdownMenuItem>
+                        <DropdownMenuItem>View Details</DropdownMenuItem>
+                        <DropdownMenuItem>Edit</DropdownMenuItem>
+                        <DropdownMenuItem>Delete</DropdownMenuItem>
                       </DropdownMenuContent>
                     </DropdownMenu>
                   </TableCell>

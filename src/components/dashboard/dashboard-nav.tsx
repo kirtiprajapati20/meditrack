@@ -17,6 +17,8 @@ import {
   Stethoscope,
   FileText,
   Shield,
+  UserPlus,
+  UserCog,
 } from 'lucide-react';
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
@@ -24,11 +26,13 @@ import Link from 'next/link';
 const navItems = [
   { href: '/dashboard', icon: LayoutDashboard, label: 'Dashboard' },
   { href: '/dashboard/patients', icon: Users, label: 'Patients' },
+  { href: '/dashboard/doctors', icon: UserCog, label: 'Doctors' },
+  { href: '/dashboard/nurses', icon: UserPlus, label: 'Nurses' },
   { href: '/dashboard/appointments', icon: Calendar, label: 'Appointments' },
   { href: '/dashboard/diagnosis', icon: Stethoscope, label: 'Diagnosis Tool' },
   { href: '/dashboard/inventory', icon: Boxes, label: 'Inventory' },
   { href: '/dashboard/billing', icon: FileText, label: 'Billing' },
-  { href: '/dashboard/users', icon: Shield, label: 'User Roles' },
+  { href: '/dashboard/users', icon: Shield, label: 'Staff Roles' },
 ];
 
 export function DashboardNav() {

@@ -79,3 +79,29 @@ export const users: User[] = [
   { id: 'USR003', name: 'Aisha Khan', email: 'aisha.khan@meditrack.com', role: 'Nurse', avatarUrl: PlaceHolderImages[7].imageUrl },
   { id: 'USR004', name: 'Dr. Ben Carter', email: 'ben.carter@meditrack.com', role: 'Doctor', avatarUrl: PlaceHolderImages[8].imageUrl },
 ];
+
+export type Doctor = {
+  id: string;
+  name: string;
+  speciality: string;
+  status: 'Active' | 'On-leave';
+  avatarUrl: string;
+};
+
+export const doctors: Doctor[] = [
+    { id: 'DOC001', name: 'Dr. Evelyn Reed', speciality: 'Cardiologist', status: 'Active', avatarUrl: PlaceHolderImages[5].imageUrl },
+    { id: 'DOC002', name: 'Dr. Ben Carter', speciality: 'Pediatrician', status: 'Active', avatarUrl: PlaceHolderImages[8].imageUrl },
+];
+
+export type Nurse = {
+  id: string;
+  name: string;
+  department: string;
+  status: 'Active' | 'On-leave';
+  avatarUrl: string;
+};
+
+export const nurses: Nurse[] = [
+    { id: 'NRS001', name: 'Aisha Khan', department: 'ICU', status: 'Active', avatarUrl: PlaceHolderImages[7].imageUrl },
+    { id: 'NRS002', name: 'David Lee', department: 'Emergency', status: 'On-leave', avatarUrl: PlaceHolderImages[9].imageUrl },
+];
