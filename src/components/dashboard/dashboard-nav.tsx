@@ -1,11 +1,6 @@
 'use client';
 
 import {
-  Sidebar,
-  SidebarContent,
-  SidebarHeader,
-} from '@/components/ui/sidebar';
-import {
   HeartPulse,
   LayoutDashboard,
   Users,
@@ -20,6 +15,11 @@ import {
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
 import { cn } from '@/lib/utils';
+import {
+  Sidebar,
+  SidebarContent,
+  SidebarHeader,
+} from '@/components/ui/sidebar';
 import { buttonVariants } from '@/components/ui/button';
 
 const navItems = [
@@ -53,10 +53,11 @@ export function DashboardNav() {
                 <Link
                   href={item.href}
                   className={cn(
-                    buttonVariants({ variant: 'ghost', size: 'default' }),
-                    'flex w-full justify-start items-center gap-2',
-                    pathname === item.href &&
-                      'bg-sidebar-accent font-medium text-sidebar-accent-foreground'
+                    buttonVariants({
+                      variant: pathname === item.href ? 'secondary' : 'ghost',
+                      size: 'default',
+                    }),
+                    'flex w-full justify-start items-center gap-2'
                   )}
                 >
                   <item.icon className="h-4 w-4" />
