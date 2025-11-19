@@ -8,6 +8,7 @@ export const metadata: Metadata = {
   description: 'Revolutionizing Hospital Management',
 };
 
+// Root layout for the application
 export default function RootLayout({
   children,
 }: Readonly<{
