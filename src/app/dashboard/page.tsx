@@ -15,6 +15,7 @@ import {
 import { Bar, BarChart, CartesianGrid, Line, LineChart, XAxis, YAxis } from 'recharts';
 import { appointments, inventory, patients } from '@/lib/placeholder-data';
 import { Users, CalendarCheck, PackageSearch, DollarSign } from 'lucide-react';
+import { cn } from '@/lib/utils';
 
 const chartData = [
   { month: 'January', revenue: 12300, patients: 80 },
@@ -45,7 +46,7 @@ export default function DashboardPage() {
   return (
     <div className="flex flex-col gap-8">
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-        <Card>
+        <Card className="interactive-card">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Total Revenue</CardTitle>
             <DollarSign className="h-4 w-4 text-muted-foreground" />
@@ -55,7 +56,7 @@ export default function DashboardPage() {
             <p className="text-xs text-muted-foreground">+20.1% from last month</p>
           </CardContent>
         </Card>
-        <Card>
+        <Card className="interactive-card">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Total Patients</CardTitle>
             <Users className="h-4 w-4 text-muted-foreground" />
@@ -65,7 +66,7 @@ export default function DashboardPage() {
             <p className="text-xs text-muted-foreground">+5 from last month</p>
           </CardContent>
         </Card>
-        <Card>
+        <Card className="interactive-card">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Upcoming Appointments</CardTitle>
             <CalendarCheck className="h-4 w-4 text-muted-foreground" />
@@ -75,7 +76,7 @@ export default function DashboardPage() {
             <p className="text-xs text-muted-foreground">in the next 7 days</p>
           </CardContent>
         </Card>
-        <Card>
+        <Card className="interactive-card">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Low Stock Items</CardTitle>
             <PackageSearch className="h-4 w-4 text-muted-foreground" />
@@ -88,7 +89,7 @@ export default function DashboardPage() {
       </div>
 
       <div className="grid gap-4 md:grid-cols-2">
-        <Card>
+        <Card className="interactive-card">
           <CardHeader>
             <CardTitle>Revenue Overview</CardTitle>
             <CardDescription>Monthly revenue for the last 6 months.</CardDescription>
@@ -115,7 +116,7 @@ export default function DashboardPage() {
             </ChartContainer>
           </CardContent>
         </Card>
-        <Card>
+        <Card className="interactive-card">
           <CardHeader>
             <CardTitle>Patient Volume</CardTitle>
             <CardDescription>New patients per month for the last 6 months.</CardDescription>
