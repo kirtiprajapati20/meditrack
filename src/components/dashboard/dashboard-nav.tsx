@@ -6,7 +6,6 @@ import {
   SidebarHeader,
   SidebarMenu,
   SidebarMenuItem,
-  SidebarMenuButton,
 } from '@/components/ui/sidebar';
 import {
   HeartPulse,
@@ -22,6 +21,8 @@ import {
 } from 'lucide-react';
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
+import { cn } from '@/lib/utils';
+import { buttonVariants } from '@/components/ui/button';
 
 const navItems = [
   { href: '/dashboard', icon: LayoutDashboard, label: 'Dashboard' },
@@ -50,14 +51,18 @@ export function DashboardNav() {
         <SidebarMenu>
           {navItems.map((item) => (
             <SidebarMenuItem key={item.href}>
-              <Link href={item.href}>
-                <SidebarMenuButton
-                  isActive={pathname === item.href}
-                  tooltip={item.label}
+              <Link href={item.href} legacyBehavior={false}>
+                <span
+                  className={cn(
+                    buttonVariants({ variant: 'ghost', size: 'default' }),
+                    'flex w-full items-center gap-2 overflow-hidden rounded-md p-2 text-left text-sm outline-none ring-sidebar-ring transition-[width,height,padding] hover:bg-sidebar-accent hover:text-sidebar-accent-foreground focus-visible:ring-2 active:bg-sidebar-accent active:text-sidebar-accent-foreground disabled:pointer-events-none disabled:opacity-50 group-has-[[data-sidebar=menu-action]]/menu-item:pr-8 aria-disabled:pointer-events-none aria-disabled:opacity-50',
+                    pathname === item.href &&
+                      'bg-sidebar-accent font-medium text-sidebar-accent-foreground'
+                  )}
                 >
                   <item.icon />
                   <span>{item.label}</span>
-                </SidebarMenuButton>
+                </span>
               </Link>
             </SidebarMenuItem>
           ))}
