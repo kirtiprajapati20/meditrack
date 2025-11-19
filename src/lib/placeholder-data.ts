@@ -6,16 +6,17 @@ export type Patient = {
   age: number;
   gender: 'Male' | 'Female' | 'Other';
   lastAppointment: string;
-  status: 'Active' | 'Inactive';
+  status: 'In Patient' | 'Out Patient';
   avatarUrl: string;
+  location: string;
 };
 
 export const patients: Patient[] = [
-  { id: 'PT001', name: 'John Doe', age: 45, gender: 'Male', lastAppointment: '2024-07-10', status: 'Active', avatarUrl: PlaceHolderImages[0].imageUrl },
-  { id: 'PT002', name: 'Jane Smith', age: 34, gender: 'Female', lastAppointment: '2024-07-12', status: 'Active', avatarUrl: PlaceHolderImages[1].imageUrl },
-  { id: 'PT003', name: 'Mike Johnson', age: 56, gender: 'Male', lastAppointment: '2024-06-20', status: 'Active', avatarUrl: PlaceHolderImages[2].imageUrl },
-  { id: 'PT004', name: 'Emily Davis', age: 29, gender: 'Female', lastAppointment: '2024-07-05', status: 'Active', avatarUrl: PlaceHolderImages[3].imageUrl },
-  { id: 'PT005', name: 'Chris Lee', age: 62, gender: 'Male', lastAppointment: '2024-05-15', status: 'Inactive', avatarUrl: PlaceHolderImages[4].imageUrl },
+  { id: 'PT001', name: 'John Doe', age: 45, gender: 'Male', lastAppointment: '2024-07-10', status: 'Out Patient', avatarUrl: PlaceHolderImages[0].imageUrl, location: 'California' },
+  { id: 'PT002', name: 'Jane Smith', age: 34, gender: 'Female', lastAppointment: '2024-07-12', status: 'In Patient', avatarUrl: PlaceHolderImages[1].imageUrl, location: 'Texas' },
+  { id: 'PT003', name: 'Mike Johnson', age: 56, gender: 'Male', lastAppointment: '2024-06-20', status: 'Out Patient', avatarUrl: PlaceHolderImages[2].imageUrl, location: 'Florida' },
+  { id: 'PT004', name: 'Emily Davis', age: 29, gender: 'Female', lastAppointment: '2024-07-05', status: 'In Patient', avatarUrl: PlaceHolderImages[3].imageUrl, location: 'New York' },
+  { id: 'PT005', name: 'Chris Lee', age: 62, gender: 'Male', lastAppointment: '2024-05-15', status: 'Out Patient', avatarUrl: PlaceHolderImages[4].imageUrl, location: 'Chicago' },
 ];
 
 export type Appointment = {
