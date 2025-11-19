@@ -183,7 +183,7 @@ export function PatientsView() {
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
           {patients.map((patient) => (
             <Card key={patient.id} className="flex flex-col">
-              <CardContent className="p-6 text-center flex-grow">
+              <CardContent className="p-6 text-center flex-grow flex flex-col">
                 <div className="flex justify-between items-start">
                     <Badge variant={patient.status === 'In Patient' ? 'default' : 'outline'} className={cn(patient.status === 'In Patient' ? 'bg-purple-100 text-purple-800' : 'bg-orange-100 text-orange-800', 'border-none')}>
                       {patient.status}
@@ -222,8 +222,10 @@ export function PatientsView() {
                   <AvatarImage src={patient.avatarUrl} alt={patient.name} />
                   <AvatarFallback>{patient.name.charAt(0)}</AvatarFallback>
                 </Avatar>
-                <p className="text-sm text-muted-foreground">{patient.id}</p>
-                <h3 className="text-lg font-semibold">{patient.name}</h3>
+                <div className="flex-grow">
+                    <p className="text-sm text-muted-foreground">{patient.id}</p>
+                    <h3 className="text-lg font-semibold">{patient.name}</h3>
+                </div>
                 <div className="grid grid-cols-3 gap-y-4 gap-x-2 text-sm mt-4 border-t pt-4">
                     <div className="font-medium text-muted-foreground">Last Visit</div>
                     <div className="font-medium text-muted-foreground">Gender</div>
@@ -382,3 +384,5 @@ export function PatientsView() {
     </>
   );
 }
+
+    
