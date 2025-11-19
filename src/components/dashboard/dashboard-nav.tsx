@@ -5,7 +5,6 @@ import {
   SidebarContent,
   SidebarHeader,
   SidebarMenu,
-  SidebarMenuItem,
 } from '@/components/ui/sidebar';
 import {
   HeartPulse,
@@ -50,21 +49,20 @@ export function DashboardNav() {
       <SidebarContent>
         <SidebarMenu>
           {navItems.map((item) => (
-            <SidebarMenuItem key={item.href}>
-              <Link href={item.href} legacyBehavior={false}>
-                <span
-                  className={cn(
-                    buttonVariants({ variant: 'ghost', size: 'default' }),
-                    'flex w-full items-center gap-2 overflow-hidden rounded-md p-2 text-left text-sm outline-none ring-sidebar-ring transition-[width,height,padding] hover:bg-sidebar-accent hover:text-sidebar-accent-foreground focus-visible:ring-2 active:bg-sidebar-accent active:text-sidebar-accent-foreground disabled:pointer-events-none disabled:opacity-50 group-has-[[data-sidebar=menu-action]]/menu-item:pr-8 aria-disabled:pointer-events-none aria-disabled:opacity-50',
-                    pathname === item.href &&
-                      'bg-sidebar-accent font-medium text-sidebar-accent-foreground'
-                  )}
-                >
-                  <item.icon />
-                  <span>{item.label}</span>
-                </span>
+            <li key={item.href} className="group/menu-item relative">
+              <Link
+                href={item.href}
+                className={cn(
+                  buttonVariants({ variant: 'ghost', size: 'default' }),
+                  'flex w-full items-center gap-2 overflow-hidden rounded-md p-2 text-left text-sm outline-none ring-sidebar-ring transition-[width,height,padding] hover:bg-sidebar-accent hover:text-sidebar-accent-foreground focus-visible:ring-2 active:bg-sidebar-accent active:text-sidebar-accent-foreground disabled:pointer-events-none disabled:opacity-50 group-has-[[data-sidebar=menu-action]]/menu-item:pr-8 aria-disabled:pointer-events-none aria-disabled:opacity-50',
+                  pathname === item.href &&
+                    'bg-sidebar-accent font-medium text-sidebar-accent-foreground'
+                )}
+              >
+                <item.icon className="h-4 w-4" />
+                <span>{item.label}</span>
               </Link>
-            </SidebarMenuItem>
+            </li>
           ))}
         </SidebarMenu>
       </SidebarContent>
