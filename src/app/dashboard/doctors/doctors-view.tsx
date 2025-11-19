@@ -37,6 +37,7 @@ import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { doctors as initialDoctors, Doctor } from '@/lib/placeholder-data';
 import { MoreHorizontal, PlusCircle } from 'lucide-react';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 
 export function DoctorsView() {
   const [doctors, setDoctors] = useState<Doctor[]>(initialDoctors);
