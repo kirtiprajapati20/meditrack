@@ -25,6 +25,7 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
+  DialogDescription,
   DialogTrigger,
   DialogFooter,
   DialogClose,
@@ -100,6 +101,9 @@ export default function DoctorsPage() {
           <DialogContent>
             <DialogHeader>
               <DialogTitle>Add New Doctor</DialogTitle>
+              <DialogDescription>
+                Fill out the form below to add a new doctor to the system.
+              </DialogDescription>
             </DialogHeader>
             <form onSubmit={handleAddDoctor}>
               <div className="grid gap-4 py-4">
@@ -211,6 +215,9 @@ export default function DoctorsPage() {
           <DialogContent>
             <DialogHeader>
               <DialogTitle>Edit Doctor</DialogTitle>
+              <DialogDescription>
+                Make changes to the doctor's profile here. Click save when you're done.
+              </DialogDescription>
             </DialogHeader>
             {editingDoctor && (
               <form onSubmit={handleEditDoctor}>
