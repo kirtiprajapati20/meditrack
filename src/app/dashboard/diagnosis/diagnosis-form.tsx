@@ -1,6 +1,6 @@
 'use client';
 
-import { useFormState, useFormStatus } from 'react-dom';
+import { useActionState, useFormStatus } from 'react';
 import { getAutomatedDiagnosis } from './actions';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
@@ -26,7 +26,7 @@ function SubmitButton() {
 }
 
 export function DiagnosisForm() {
-  const [state, formAction] = useFormState(getAutomatedDiagnosis, null);
+  const [state, formAction] = useActionState(getAutomatedDiagnosis, null);
 
   return (
     <div className="grid gap-8 md:grid-cols-2">
