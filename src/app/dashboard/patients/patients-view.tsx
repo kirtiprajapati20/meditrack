@@ -7,6 +7,14 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardFooter } from '@/components/ui/card';
 import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/components/ui/table';
+import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
@@ -37,13 +45,16 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { patients as initialPatients, Patient } from '@/lib/placeholder-data';
-import { MoreHorizontal, PlusCircle, CalendarPlus } from 'lucide-react';
+import { MoreHorizontal, PlusCircle, CalendarPlus, List, LayoutGrid } from 'lucide-react';
 import { cn } from '@/lib/utils';
+
+type ViewMode = 'grid' | 'list';
 
 export function PatientsView() {
   const [patients, setPatients] = useState<Patient[]>(initialPatients);
   const [editingPatient, setEditingPatient] = useState<Patient | null>(null);
   const [isAddDialogOpen, setAddDialogOpen] = useState(false);
+  const [viewMode, setViewMode] = useState<ViewMode>('grid');
 
   const handleDelete = (id: string) => {
     setPatients(patients.filter((patient) => patient.id !== id));
@@ -94,9 +105,14 @@ export function PatientsView() {
           <Input placeholder="Search Keyword" />
         </div>
         <div className="flex items-center gap-2">
-            {/* Placeholder for view toggle icons */}
-            <Button variant="outline" size="icon"><span className="sr-only">Grid View</span><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4"><rect width="7" height="7" x="3" y="3" rx="1"></rect><rect width="7" height="7" x="14" y="3" rx="1"></rect><rect width="7" height="7" x="14" y="14" rx="1"></rect><rect width="7" height="7" x="3" y="14" rx="1"></rect></svg></Button>
-            <Button variant="ghost" size="icon"><span className="sr-only">List View</span><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4"><line x1="8" x2="21" y1="6" y2="6"></line><line x1="8" x2="21" y1="12" y2="12"></line><line x1="8" x2="21" y1="18" y2="18"></line><line x1="3" x2="3.01" y1="6" y2="6"></line><line x1="3" x2="3.01" y1="12" y2="12"></line><line x1="3" x2="3.01" y1="18" y2="18"></line></svg></Button>
+            <Button variant={viewMode === 'grid' ? 'secondary' : 'ghost'} size="icon" onClick={() => setViewMode('grid')}>
+              <LayoutGrid className="h-4 w-4" />
+              <span className="sr-only">Grid View</span>
+            </Button>
+            <Button variant={viewMode === 'list' ? 'secondary' : 'ghost'} size="icon" onClick={() => setViewMode('list')}>
+              <List className="h-4 w-4" />
+              <span className="sr-only">List View</span>
+            </Button>
              <Dialog open={isAddDialogOpen} onOpenChange={setAddDialogOpen}>
                 <DialogTrigger asChild>
                   <Button>
@@ -162,68 +178,146 @@ export function PatientsView() {
               </Dialog>
         </div>
       </div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-        {patients.map((patient) => (
-          <Card key={patient.id} className="flex flex-col">
-            <CardContent className="p-6 text-center flex-grow">
-              <div className="flex justify-between items-start">
-                  <Badge variant={patient.status === 'In Patient' ? 'default' : 'outline'} className={cn(patient.status === 'In Patient' ? 'bg-purple-100 text-purple-800' : 'bg-orange-100 text-orange-800', 'border-none')}>
-                    {patient.status}
-                  </Badge>
-                  <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                      <Button variant="ghost" size="icon" className="h-6 w-6">
-                        <MoreHorizontal className="h-4 w-4" />
-                      </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end">
-                      <DropdownMenuItem onClick={() => setEditingPatient(patient)}>Edit</DropdownMenuItem>
-                      <AlertDialog>
-                          <AlertDialogTrigger asChild>
-                              <DropdownMenuItem onSelect={(e) => e.preventDefault()}>Delete</DropdownMenuItem>
-                          </AlertDialogTrigger>
-                          <AlertDialogContent>
-                              <AlertDialogHeader>
-                              <AlertDialogTitle>Are you sure?</AlertDialogTitle>
-                              <AlertDialogDescription>
-                                  This action cannot be undone. This will permanently delete the patient {patient.name}.
-                              </AlertDialogDescription>
-                              </AlertDialogHeader>
-                              <AlertDialogFooter>
-                              <AlertDialogCancel>Cancel</AlertDialogCancel>
-                              <AlertDialogAction onClick={() => handleDelete(patient.id)}>
-                                  Continue
-                              </AlertDialogAction>
-                              </AlertDialogFooter>
-                          </AlertDialogContent>
-                      </AlertDialog>
-                    </DropdownMenuContent>
-                  </DropdownMenu>
-              </div>
-              <Avatar className="w-20 h-20 mx-auto mb-4 mt-2">
-                <AvatarImage src={patient.avatarUrl} alt={patient.name} />
-                <AvatarFallback>{patient.name.charAt(0)}</AvatarFallback>
-              </Avatar>
-              <p className="text-sm text-muted-foreground">{patient.id}</p>
-              <h3 className="text-lg font-semibold">{patient.name}</h3>
-              <div className="grid grid-cols-3 gap-y-4 gap-x-2 text-sm mt-4 border-t pt-4">
-                  <div className="font-medium text-muted-foreground">Last Visit</div>
-                  <div className="font-medium text-muted-foreground">Gender</div>
-                  <div className="font-medium text-muted-foreground">Location</div>
-                  <div>{format(new Date(patient.lastAppointment), 'dd MMM yyyy')}</div>
-                  <div>{patient.gender}</div>
-                  <div>{patient.location}</div>
-              </div>
-            </CardContent>
-            <CardFooter>
-                <Button className="w-full">
-                    <CalendarPlus className="mr-2 h-4 w-4" />
-                    Add Appointment
-                </Button>
-            </CardFooter>
-          </Card>
-        ))}
-      </div>
+      
+      {viewMode === 'grid' ? (
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+          {patients.map((patient) => (
+            <Card key={patient.id} className="flex flex-col">
+              <CardContent className="p-6 text-center flex-grow">
+                <div className="flex justify-between items-start">
+                    <Badge variant={patient.status === 'In Patient' ? 'default' : 'outline'} className={cn(patient.status === 'In Patient' ? 'bg-purple-100 text-purple-800' : 'bg-orange-100 text-orange-800', 'border-none')}>
+                      {patient.status}
+                    </Badge>
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild>
+                        <Button variant="ghost" size="icon" className="h-6 w-6">
+                          <MoreHorizontal className="h-4 w-4" />
+                        </Button>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent align="end">
+                        <DropdownMenuItem onClick={() => setEditingPatient(patient)}>Edit</DropdownMenuItem>
+                        <AlertDialog>
+                            <AlertDialogTrigger asChild>
+                                <DropdownMenuItem onSelect={(e) => e.preventDefault()}>Delete</DropdownMenuItem>
+                            </AlertDialogTrigger>
+                            <AlertDialogContent>
+                                <AlertDialogHeader>
+                                <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+                                <AlertDialogDescription>
+                                    This action cannot be undone. This will permanently delete the patient {patient.name}.
+                                </AlertDialogDescription>
+                                </AlertDialogHeader>
+                                <AlertDialogFooter>
+                                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                <AlertDialogAction onClick={() => handleDelete(patient.id)}>
+                                    Continue
+                                </AlertDialogAction>
+                                </AlertDialogFooter>
+                            </AlertDialogContent>
+                        </AlertDialog>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                </div>
+                <Avatar className="w-20 h-20 mx-auto mb-4 mt-2">
+                  <AvatarImage src={patient.avatarUrl} alt={patient.name} />
+                  <AvatarFallback>{patient.name.charAt(0)}</AvatarFallback>
+                </Avatar>
+                <p className="text-sm text-muted-foreground">{patient.id}</p>
+                <h3 className="text-lg font-semibold">{patient.name}</h3>
+                <div className="grid grid-cols-3 gap-y-4 gap-x-2 text-sm mt-4 border-t pt-4">
+                    <div className="font-medium text-muted-foreground">Last Visit</div>
+                    <div className="font-medium text-muted-foreground">Gender</div>
+                    <div className="font-medium text-muted-foreground">Location</div>
+                    <div>{format(new Date(patient.lastAppointment), 'dd MMM yyyy')}</div>
+                    <div>{patient.gender}</div>
+                    <div>{patient.location}</div>
+                </div>
+              </CardContent>
+              <CardFooter>
+                  <Button className="w-full">
+                      <CalendarPlus className="mr-2 h-4 w-4" />
+                      Add Appointment
+                  </Button>
+              </CardFooter>
+            </Card>
+          ))}
+        </div>
+      ) : (
+        <Card>
+          <CardContent>
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Patient</TableHead>
+                  <TableHead className="hidden sm:table-cell">Status</TableHead>
+                  <TableHead className="hidden md:table-cell">Last Appointment</TableHead>
+                  <TableHead className="hidden md:table-cell">Location</TableHead>
+                  <TableHead>
+                    <span className="sr-only">Actions</span>
+                  </TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {patients.map((patient) => (
+                  <TableRow key={patient.id}>
+                    <TableCell>
+                      <div className="flex items-center gap-3">
+                        <Avatar className="hidden h-9 w-9 sm:flex">
+                          <AvatarImage src={patient.avatarUrl} alt="Avatar" />
+                          <AvatarFallback>{patient.name.charAt(0)}</AvatarFallback>
+                        </Avatar>
+                        <div>
+                          <div className="font-medium">{patient.name}</div>
+                          <div className="text-sm text-muted-foreground">{patient.id}</div>
+                        </div>
+                      </div>
+                    </TableCell>
+                    <TableCell className="hidden sm:table-cell">
+                      <Badge variant={patient.status === 'In Patient' ? 'default' : 'outline'} className={cn(patient.status === 'In Patient' ? 'bg-purple-100 text-purple-800' : 'bg-orange-100 text-orange-800', 'border-none')}>
+                        {patient.status}
+                      </Badge>
+                    </TableCell>
+                    <TableCell className="hidden md:table-cell">{format(new Date(patient.lastAppointment), 'dd MMM yyyy')}</TableCell>
+                    <TableCell className="hidden md:table-cell">{patient.location}</TableCell>
+                    <TableCell>
+                      <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                          <Button aria-haspopup="true" size="icon" variant="ghost">
+                            <MoreHorizontal className="h-4 w-4" />
+                            <span className="sr-only">Toggle menu</span>
+                          </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align="end">
+                          <DropdownMenuItem onClick={() => setEditingPatient(patient)}>Edit</DropdownMenuItem>
+                          <AlertDialog>
+                            <AlertDialogTrigger asChild>
+                                <DropdownMenuItem onSelect={(e) => e.preventDefault()}>Delete</DropdownMenuItem>
+                            </AlertDialogTrigger>
+                            <AlertDialogContent>
+                                <AlertDialogHeader>
+                                <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+                                <AlertDialogDescription>
+                                    This action cannot be undone. This will permanently delete the patient {patient.name}.
+                                </AlertDialogDescription>
+                                </AlertDialogHeader>
+                                <AlertDialogFooter>
+                                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                <AlertDialogAction onClick={() => handleDelete(patient.id)}>
+                                    Continue
+                                </AlertDialogAction>
+                                </AlertDialogFooter>
+                            </AlertDialogContent>
+                          </AlertDialog>
+                        </DropdownMenuContent>
+                      </DropdownMenu>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </CardContent>
+        </Card>
+      )}
 
       {/* Edit Patient Dialog */}
       <Dialog open={!!editingPatient} onOpenChange={(isOpen) => !isOpen && setEditingPatient(null)}>
