@@ -1,3 +1,4 @@
+import { Input } from '@/components/ui/input';
 import { SidebarTrigger } from '@/components/ui/sidebar';
 import { UserNav } from './user-nav';
 
@@ -7,7 +8,10 @@ export function Header() {
       <div className="md:hidden">
         <SidebarTrigger />
       </div>
-      <div className="flex w-full items-center justify-end gap-4">
+      <div className="flex-1">
+        <Input placeholder="Search Keyword" className="w-full md:w-1/3" />
+      </div>
+      <div className="flex items-center justify-end gap-4">
         <UserNav />
       </div>
     </header>

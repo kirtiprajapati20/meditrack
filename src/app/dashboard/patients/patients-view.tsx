@@ -100,10 +100,7 @@ export function PatientsView() {
 
   return (
     <>
-      <div className="flex justify-between items-center mb-4">
-        <div className="w-1/3">
-          <Input placeholder="Search Keyword" />
-        </div>
+      <div className="flex justify-end items-center mb-4">
         <div className="flex items-center gap-2">
             <Button variant={viewMode === 'grid' ? 'secondary' : 'ghost'} size="icon" onClick={() => setViewMode('grid')}>
               <LayoutGrid className="h-4 w-4" />
@@ -180,7 +177,7 @@ export function PatientsView() {
       </div>
       
       {viewMode === 'grid' ? (
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {patients.map((patient) => (
             <Card key={patient.id} className="flex flex-col">
               <CardContent className="p-6 text-center flex-grow flex flex-col">
@@ -359,8 +356,7 @@ export function PatientsView() {
                     </Select>
                   </div>
                   <div className="grid grid-cols-4 items-center gap-4">
-                    <Label htmlFor="edit-status" className="text-right">Status</Label>
-                    <Select name="status" defaultValue={editingPatient.status}>
+                    <Label htmlFor="edit-status" className="text-right">Status</Label>                    <Select name="status" defaultValue={editingPatient.status}>
                       <SelectTrigger className="col-span-3">
                         <SelectValue placeholder="Select status" />
                       </SelectTrigger>
@@ -384,5 +380,3 @@ export function PatientsView() {
     </>
   );
 }
-
-    
