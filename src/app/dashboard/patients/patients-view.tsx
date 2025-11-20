@@ -47,6 +47,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { patients as initialPatients, Patient } from '@/lib/placeholder-data';
 import { MoreHorizontal, PlusCircle, CalendarPlus, List, LayoutGrid } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { BookAppointmentDialog } from '@/components/dashboard/book-appointment-dialog';
 
 type ViewMode = 'grid' | 'list';
 
@@ -233,10 +234,15 @@ export function PatientsView() {
                 </div>
               </CardContent>
               <CardFooter>
-                  <Button className="w-full">
-                      <CalendarPlus className="mr-2 h-4 w-4" />
-                      Add Appointment
-                  </Button>
+                 <BookAppointmentDialog 
+                    patientName={patient.name} 
+                    trigger={
+                        <Button className="w-full">
+                            <CalendarPlus className="mr-2 h-4 w-4" />
+                            Add Appointment
+                        </Button>
+                    }
+                />
               </CardFooter>
             </Card>
           ))}
@@ -288,6 +294,13 @@ export function PatientsView() {
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end">
                           <DropdownMenuItem onClick={() => setEditingPatient(patient)}>Edit</DropdownMenuItem>
+                           <DropdownMenuItem asChild>
+                                <BookAppointmentDialog 
+                                    patientName={patient.name} 
+                                    trigger={<div className='relative flex cursor-default select-none items-center gap-2 rounded-sm px-2 py-1.5 text-sm outline-none transition-colors focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50'>
+                                        <CalendarPlus className="mr-2 h-4 w-4" /> Book Appointment</div>}
+                                />
+                            </DropdownMenuItem>
                           <AlertDialog>
                             <AlertDialogTrigger asChild>
                                 <DropdownMenuItem onSelect={(e) => e.preventDefault()}>Delete</DropdownMenuItem>

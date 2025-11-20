@@ -1,19 +1,15 @@
 import PageHeader from '@/components/dashboard/page-header';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Button } from '@/components/ui/button';
 import { Calendar } from '@/components/ui/calendar';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { appointments, patients } from '@/lib/placeholder-data';
-import { PlusCircle } from 'lucide-react';
+import { BookAppointmentDialog } from '@/components/dashboard/book-appointment-dialog';
 
 export default function AppointmentsPage() {
   return (
     <>
       <PageHeader title="Appointments">
-        <Button>
-          <PlusCircle className="mr-2" />
-          Book Appointment
-        </Button>
+        <BookAppointmentDialog />
       </PageHeader>
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
         <div className="lg:col-span-2">
@@ -40,7 +36,7 @@ export default function AppointmentsPage() {
                     </div>
                     <div className="text-right">
                       <p className="font-medium">{appointment.time}</p>
-                      <p className="text-sm text-muted-foreground">{appointment.date}</p>
+                      <p className="text-sm text-muted-foreground">{new Date(appointment.date).toLocaleDateString()}</p>
                     </div>
                   </div>
                 );
