@@ -38,7 +38,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { doctors as initialDoctors, Doctor } from '@/lib/placeholder-data';
 import { MoreHorizontal, PlusCircle, List, LayoutGrid } from 'lucide-react';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { cn } from '@/lib/utils';
+import Link from 'next/link';
 
 type ViewMode = 'grid' | 'list';
 
@@ -61,6 +61,9 @@ export function DoctorsView() {
       speciality: formData.get('speciality') as string,
       status: formData.get('status') as 'Active' | 'On-leave',
       avatarUrl: `https://picsum.photos/seed/${Math.random()}/200/200`,
+      email: `${(formData.get('name') as string).toLowerCase().replace(' ', '.')}@meditrack.com`,
+      phone: 'N/A',
+      address: 'N/A'
     };
     setDoctors([...doctors, newDoctor]);
     setAddDialogOpen(false);
@@ -149,14 +152,28 @@ export function DoctorsView() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {doctors.map((doctor) => (
             <Card key={doctor.id} className="flex flex-col">
-              <CardContent className="p-6 text-center flex flex-col flex-grow">
-                 <div className="flex justify-between items-start">
-                    <Badge variant={doctor.status === 'Active' ? 'secondary' : 'outline'}>
-                        {doctor.status}
-                    </Badge>
-                    <DropdownMenu>
+              <Link href={`/dashboard/doctors/${doctor.id}`} className="flex-grow">
+                <CardContent className="p-6 text-center flex flex-col flex-grow h-full">
+                  <div className="flex justify-between items-start">
+                      <Badge variant={doctor.status === 'Active' ? 'secondary' : 'outline'}>
+                          {doctor.status}
+                      </Badge>
+                      <div></div>
+                  </div>
+                  <Avatar className="w-20 h-20 mx-auto mb-4 mt-2">
+                    <AvatarImage src={doctor.avatarUrl} alt={doctor.name} />
+                    <AvatarFallback>{doctor.name.split(' ').map(n => n[0]).join('')}</AvatarFallback>
+                  </Avatar>
+                  <div className="flex-grow">
+                      <h3 className="text-lg font-semibold">{doctor.name}</h3>
+                      <p className="text-sm text-muted-foreground">{doctor.speciality}</p>
+                  </div>
+                </CardContent>
+              </Link>
+               <div className="p-4 border-t">
+                  <DropdownMenu>
                       <DropdownMenuTrigger asChild>
-                        <Button variant="ghost" size="icon" className="h-6 w-6">
+                        <Button variant="ghost" className="w-full justify-end">
                           <MoreHorizontal className="h-4 w-4" />
                         </Button>
                       </DropdownMenuTrigger>
@@ -186,15 +203,6 @@ export function DoctorsView() {
                       </DropdownMenuContent>
                     </DropdownMenu>
                 </div>
-                <Avatar className="w-20 h-20 mx-auto mb-4 mt-2">
-                  <AvatarImage src={doctor.avatarUrl} alt={doctor.name} />
-                  <AvatarFallback>{doctor.name.split(' ').map(n => n[0]).join('')}</AvatarFallback>
-                </Avatar>
-                <div className="flex-grow">
-                    <h3 className="text-lg font-semibold">{doctor.name}</h3>
-                    <p className="text-sm text-muted-foreground">{doctor.speciality}</p>
-                </div>
-              </CardContent>
             </Card>
           ))}
         </div>
@@ -217,11 +225,13 @@ export function DoctorsView() {
                     <TableRow key={doctor.id}>
                     <TableCell>
                         <div className="flex items-center gap-3">
-                        <Avatar className="hidden h-9 w-9 sm:flex">
-                            <AvatarImage src={doctor.avatarUrl} alt="Avatar" />
-                            <AvatarFallback>{doctor.name.charAt(0)}</AvatarFallback>
-                        </Avatar>
-                        <div className="font-medium">{doctor.name}</div>
+                          <Link href={`/dashboard/doctors/${doctor.id}`} className="flex items-center gap-3">
+                            <Avatar className="hidden h-9 w-9 sm:flex">
+                                <AvatarImage src={doctor.avatarUrl} alt="Avatar" />
+                                <AvatarFallback>{doctor.name.charAt(0)}</AvatarFallback>
+                            </Avatar>
+                            <div className="font-medium">{doctor.name}</div>
+                          </Link>
                         </div>
                     </TableCell>
                     <TableCell className="hidden sm:table-cell">{doctor.speciality}</TableCell>

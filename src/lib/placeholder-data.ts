@@ -17,7 +17,10 @@ export const patients: Patient[] = [
   { id: 'PT003', name: 'Mike Johnson', age: 56, gender: 'Male', lastAppointment: '2024-06-20', status: 'Out Patient', avatarUrl: PlaceHolderImages[2].imageUrl, location: 'Florida' },
   { id: 'PT004', name: 'Emily Davis', age: 29, gender: 'Female', lastAppointment: '2024-07-05', status: 'In Patient', avatarUrl: PlaceHolderImages[3].imageUrl, location: 'New York' },
   { id: 'PT005', name: 'Chris Lee', age: 62, gender: 'Male', lastAppointment: '2024-05-15', status: 'Out Patient', avatarUrl: PlaceHolderImages[4].imageUrl, location: 'Chicago' },
+  { id: 'PT006', name: 'Bessie Cooper', age: 48, gender: 'Female', lastAppointment: '2024-07-01', status: 'Out Patient', avatarUrl: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHx3b21hbiUyMHBvcnRyYWl0fGVufDB8fHx8fDE3NjM0NDQ2NjJ8MA&ixlib=rb-4.1.0&q=80&w=1080", location: 'Texas' },
+  { id: 'PT007', name: 'Courtney Henry', age: 35, gender: 'Female', lastAppointment: '2024-07-02', status: 'In Patient', avatarUrl: "https://images.unsplash.com/photo-1594744803329-e58b31de8bf5?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHx3b21hbiUyMHBvcnRyYWl0fGVufDB8fHx8fDE3NjM0NDQ2NjJ8MA&ixlib=rb-4.1.0&q=80&w=1080", location: 'Florida' },
 ];
+
 
 export type Appointment = {
   id: string;
@@ -25,13 +28,19 @@ export type Appointment = {
   doctorName: string;
   time: string;
   date: string;
-  status: 'Upcoming' | 'Completed' | 'Cancelled';
+  status: 'Upcoming' | 'Completed' | 'Cancelled' | 'Scheduled' | 'Ongoing';
+  condition?: string;
+  treatmentPlan?: string;
 };
 
 export const appointments: Appointment[] = [
   { id: 'APT001', patientName: 'Jane Smith', doctorName: 'Dr. Wilson', time: '10:00 AM', date: '2024-07-25', status: 'Upcoming' },
   { id: 'APT002', patientName: 'John Doe', doctorName: 'Dr. Adams', time: '11:30 AM', date: '2024-07-25', status: 'Upcoming' },
   { id: 'APT003', patientName: 'Emily Davis', doctorName: 'Dr. Wilson', time: '02:00 PM', date: '2024-07-26', status: 'Upcoming' },
+  { id: 'APT004', patientName: 'John Doe', doctorName: 'Dr. Evelyn Reed', time: '09:00 AM', date: '2025-04-22', status: 'Scheduled', condition: 'Arrhythmia', treatmentPlan: 'Medication + Monitoring' },
+  { id: 'APT005', patientName: 'Jane Smith', doctorName: 'Dr. Evelyn Reed', time: '07:38 AM', date: '2025-02-12', status: 'Completed', condition: 'Coronary Artery Disease', treatmentPlan: 'Angioplasty' },
+  { id: 'APT006', patientName: 'Bessie Cooper', doctorName: 'Dr. Evelyn Reed', time: '01:34 PM', date: '2024-12-07', status: 'Scheduled', condition: 'Hypertension', treatmentPlan: 'Lifestyle + Drugs' },
+  { id: 'APT007', patientName: 'Courtney Henry', doctorName: 'Dr. Evelyn Reed', time: '01:55 PM', date: '2024-11-22', status: 'Ongoing', condition: 'Valve Disorder', treatmentPlan: 'Surgery' },
 ];
 
 export type InventoryItem = {
@@ -87,11 +96,14 @@ export type Doctor = {
   speciality: string;
   status: 'Active' | 'On-leave';
   avatarUrl: string;
+  phone: string;
+  email: string;
+  address: string;
 };
 
 export const doctors: Doctor[] = [
-    { id: 'DOC001', name: 'Dr. Evelyn Reed', speciality: 'Cardiologist', status: 'Active', avatarUrl: PlaceHolderImages[5].imageUrl },
-    { id: 'DOC002', name: 'Dr. Ben Carter', speciality: 'Pediatrician', status: 'Active', avatarUrl: PlaceHolderImages[8].imageUrl },
+    { id: 'DOC001', name: 'Dr. Evelyn Reed', speciality: 'Cardiologist', status: 'Active', avatarUrl: PlaceHolderImages[5].imageUrl, phone: '(217) 555-0113', email: 'evelyn.reed@meditrack.com', address: '1901 Thornridge Cir. Shiloh, Hawaii 81063' },
+    { id: 'DOC002', name: 'Dr. Ben Carter', speciality: 'Pediatrician', status: 'Active', avatarUrl: PlaceHolderImages[8].imageUrl, phone: '(217) 555-0114', email: 'ben.carter@meditrack.com', address: '1902 Thornridge Cir. Shiloh, Hawaii 81063' },
 ];
 
 export type Nurse = {
