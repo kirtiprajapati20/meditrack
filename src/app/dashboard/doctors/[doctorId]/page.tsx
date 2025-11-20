@@ -7,6 +7,7 @@ import { doctors, patients as allPatients, appointments } from '@/lib/placeholde
 import { notFound } from 'next/navigation';
 import { Phone, Mail, MapPin, Briefcase, GraduationCap, Star, TrendingUp, MoreHorizontal, CalendarPlus } from 'lucide-react';
 import { Progress } from '@/components/ui/progress';
+import { cn } from '@/lib/utils';
 
 export default function DoctorDetailPage({ params }: { params: { doctorId: string } }) {
   const doctor = doctors.find(d => d.id === params.doctorId);
@@ -35,11 +36,11 @@ export default function DoctorDetailPage({ params }: { params: { doctorId: strin
   const getStatusVariant = (status: string) => {
     switch (status) {
       case 'Scheduled':
-        return 'bg-blue-100 text-blue-800';
+        return 'bg-blue-100 text-blue-800'; // This could be mapped to a theme color if needed
       case 'Completed':
-        return 'bg-green-100 text-green-800';
+        return 'bg-green-100 text-green-800'; // This could be mapped to secondary
       case 'Ongoing':
-        return 'bg-yellow-100 text-yellow-800';
+        return 'bg-yellow-100 text-yellow-800'; // This could be mapped to a theme color if needed
       default:
         return 'bg-gray-100 text-gray-800';
     }
@@ -49,7 +50,7 @@ export default function DoctorDetailPage({ params }: { params: { doctorId: strin
   return (
     <div className="space-y-8">
       {/* Doctor Header */}
-      <Card className="bg-primary/10 dark:bg-green-900/20 border-primary/20 dark:border-green-800/50">
+      <Card className="bg-primary/10 border-primary/20">
         <CardContent className="p-6 flex flex-col md:flex-row items-center gap-6">
           <Avatar className="w-32 h-32 border-4 border-white shadow-md">
             <AvatarImage src={doctor.avatarUrl} />
@@ -60,8 +61,8 @@ export default function DoctorDetailPage({ params }: { params: { doctorId: strin
               <div>
                 <div className="flex items-center gap-4">
                     <h1 className="text-3xl font-bold">{doctor.name}</h1>
-                    <Badge className="bg-green-200 text-green-800">Active</Badge>
-                    <Badge className="bg-red-200 text-red-800">Full Time</Badge>
+                    <Badge variant="secondary">Active</Badge>
+                    <Badge variant="destructive">Full Time</Badge>
                 </div>
                 <p className="text-muted-foreground">{doctor.speciality}</p>
               </div>
@@ -98,7 +99,7 @@ export default function DoctorDetailPage({ params }: { params: { doctorId: strin
                 <p className="text-2xl font-bold">3.89 GPA</p>
                 <p className="text-xs text-muted-foreground">MBBS, California University</p>
                 <Progress value={82} className="mt-2 h-2" />
-                <p className="text-xs text-muted-foreground mt-1 flex items-center"><TrendingUp className="w-3 h-3 mr-1 text-green-500"/> 3.82 (AVG Semester)</p>
+                <p className="text-xs text-muted-foreground mt-1 flex items-center"><TrendingUp className="w-3 h-3 mr-1 text-primary"/> 3.82 (AVG Semester)</p>
             </CardContent>
         </Card>
         <Card className="interactive-card">
@@ -120,7 +121,7 @@ export default function DoctorDetailPage({ params }: { params: { doctorId: strin
                 <p className="text-2xl font-bold">4.8 / 5.0</p>
                 <p className="text-xs text-muted-foreground">Average Rating</p>
                 <Progress value={96} className="mt-2 h-2" />
-                <p className="text-xs text-muted-foreground mt-1 flex items-center"><TrendingUp className="w-3 h-3 mr-1 text-green-500"/> 96% (Patient Satisfaction)</p>
+                <p className="text-xs text-muted-foreground mt-1 flex items-center"><TrendingUp className="w-3 h-3 mr-1 text-primary"/> 96% (Patient Satisfaction)</p>
             </CardContent>
         </Card>
       </div>
@@ -166,7 +167,7 @@ export default function DoctorDetailPage({ params }: { params: { doctorId: strin
                   <TableCell>{patient.condition}</TableCell>
                   <TableCell>{patient.treatmentPlan}</TableCell>
                   <TableCell>
-                    <Badge variant="outline" className={getStatusVariant(patient.appointmentStatus)}>{patient.appointmentStatus}</Badge>
+                    <Badge variant="outline" className={cn(getStatusVariant(patient.appointmentStatus))}>{patient.appointmentStatus}</Badge>
                   </TableCell>
                   <TableCell>
                     <Button variant="ghost" size="icon">
