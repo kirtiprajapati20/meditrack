@@ -36,13 +36,13 @@ export default function DoctorDetailPage({ params }: { params: { doctorId: strin
   const getStatusVariant = (status: string) => {
     switch (status) {
       case 'Scheduled':
-        return 'bg-blue-100 text-blue-800'; // This could be mapped to a theme color if needed
+        return 'bg-blue-100 text-blue-800 dark:bg-blue-900/50 dark:text-blue-300';
       case 'Completed':
-        return 'bg-green-100 text-green-800'; // This could be mapped to secondary
+        return 'bg-green-100 text-green-800 dark:bg-green-900/50 dark:text-green-300';
       case 'Ongoing':
-        return 'bg-yellow-100 text-yellow-800'; // This could be mapped to a theme color if needed
+        return 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/50 dark:text-yellow-300';
       default:
-        return 'bg-gray-100 text-gray-800';
+        return 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300';
     }
   };
 
@@ -110,7 +110,7 @@ export default function DoctorDetailPage({ params }: { params: { doctorId: strin
                 <p className="text-2xl font-bold">12+ Years</p>
                 <p className="text-xs text-muted-foreground">Treatments in {doctor.speciality}</p>
                 <Progress value={55} className="mt-2 h-2" />
-                <p className="text-xs text-muted-foreground mt-1 flex items-center"><TrendingUp className="w-3 h-3 mr-1 text-yellow-500"/> 55.8% (Performance)</p>
+                <p className="text-xs text-muted-foreground mt-1 flex items-center"><TrendingUp className="w-3 h-3 mr-1 text-accent"/> 55.8% (Performance)</p>
             </CardContent>
         </Card>
         <Card className="interactive-card">
@@ -167,7 +167,7 @@ export default function DoctorDetailPage({ params }: { params: { doctorId: strin
                   <TableCell>{patient.condition}</TableCell>
                   <TableCell>{patient.treatmentPlan}</TableCell>
                   <TableCell>
-                    <Badge variant="outline" className={cn(getStatusVariant(patient.appointmentStatus))}>{patient.appointmentStatus}</Badge>
+                    <Badge variant="outline" className={cn(getStatusVariant(patient.appointmentStatus), 'border-none')}>{patient.appointmentStatus}</Badge>
                   </TableCell>
                   <TableCell>
                     <Button variant="ghost" size="icon">
