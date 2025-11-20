@@ -183,7 +183,7 @@ export function PatientsView() {
             <Card key={patient.id} className="flex flex-col">
               <CardContent className="p-6 text-center flex-grow flex flex-col">
                 <div className="flex justify-between items-start">
-                    <Badge variant={patient.status === 'In Patient' ? 'default' : 'outline'} className={cn(patient.status === 'In Patient' ? 'bg-purple-100 text-purple-800' : 'bg-orange-100 text-orange-800', 'border-none')}>
+                    <Badge variant={patient.status === 'In Patient' ? 'default' : 'outline'} className={cn(patient.status === 'In Patient' ? 'bg-purple-100 text-purple-800 dark:bg-purple-900/50 dark:text-purple-300' : 'bg-orange-100 text-orange-800 dark:bg-orange-900/50 dark:text-orange-300', 'border-none font-medium')}>
                       {patient.status}
                     </Badge>
                     <DropdownMenu>
@@ -278,7 +278,7 @@ export function PatientsView() {
                       </div>
                     </TableCell>
                     <TableCell className="hidden sm:table-cell">
-                      <Badge variant={patient.status === 'In Patient' ? 'default' : 'outline'} className={cn(patient.status === 'In Patient' ? 'bg-purple-100 text-purple-800' : 'bg-orange-100 text-orange-800', 'border-none')}>
+                      <Badge variant={patient.status === 'In Patient' ? 'default' : 'outline'} className={cn(patient.status === 'In Patient' ? 'bg-purple-100 text-purple-800 dark:bg-purple-900/50 dark:text-purple-300' : 'bg-orange-100 text-orange-800 dark:bg-orange-900/50 dark:text-orange-300', 'border-none font-medium')}>
                         {patient.status}
                       </Badge>
                     </TableCell>
