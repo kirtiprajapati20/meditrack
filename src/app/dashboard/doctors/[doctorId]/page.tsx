@@ -49,7 +49,7 @@ export default function DoctorDetailPage({ params }: { params: { doctorId: strin
   return (
     <div className="space-y-8">
       {/* Doctor Header */}
-      <Card className="bg-green-50/50 dark:bg-green-900/20 border-green-200 dark:border-green-800/50">
+      <Card className="bg-primary/10 dark:bg-green-900/20 border-primary/20 dark:border-green-800/50">
         <CardContent className="p-6 flex flex-col md:flex-row items-center gap-6">
           <Avatar className="w-32 h-32 border-4 border-white shadow-md">
             <AvatarImage src={doctor.avatarUrl} />
@@ -90,7 +90,7 @@ export default function DoctorDetailPage({ params }: { params: { doctorId: strin
 
       {/* Doctor Summary */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <Card>
+        <Card className="interactive-card">
             <CardHeader className="flex flex-row items-center justify-between pb-2">
                 <CardTitle className="text-sm font-medium flex items-center gap-2"><GraduationCap className="w-4 h-4"/> Education Quality</CardTitle>
             </CardHeader>
@@ -101,7 +101,7 @@ export default function DoctorDetailPage({ params }: { params: { doctorId: strin
                 <p className="text-xs text-muted-foreground mt-1 flex items-center"><TrendingUp className="w-3 h-3 mr-1 text-green-500"/> 3.82 (AVG Semester)</p>
             </CardContent>
         </Card>
-        <Card>
+        <Card className="interactive-card">
             <CardHeader className="flex flex-row items-center justify-between pb-2">
                 <CardTitle className="text-sm font-medium flex items-center gap-2"><Briefcase className="w-4 h-4"/> Experience History</CardTitle>
             </CardHeader>
@@ -112,7 +112,7 @@ export default function DoctorDetailPage({ params }: { params: { doctorId: strin
                 <p className="text-xs text-muted-foreground mt-1 flex items-center"><TrendingUp className="w-3 h-3 mr-1 text-yellow-500"/> 55.8% (Performance)</p>
             </CardContent>
         </Card>
-        <Card>
+        <Card className="interactive-card">
             <CardHeader className="flex flex-row items-center justify-between pb-2">
                 <CardTitle className="text-sm font-medium flex items-center gap-2"><Star className="w-4 h-4"/> Rating Performance</CardTitle>
             </CardHeader>
