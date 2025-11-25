@@ -36,8 +36,9 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { doctors as initialDoctors, Doctor } from '@/lib/placeholder-data';
-import { MoreHorizontal, PlusCircle, List, LayoutGrid } from 'lucide-react';
+import { MoreHorizontal, PlusCircle, List, LayoutGrid, X, ChevronDown } from 'lucide-react';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { Checkbox } from '@/components/ui/checkbox';
 import Link from 'next/link';
 
 type ViewMode = 'grid' | 'list';
@@ -47,9 +48,28 @@ export function DoctorsView() {
   const [editingDoctor, setEditingDoctor] = useState<Doctor | null>(null);
   const [isAddDialogOpen, setAddDialogOpen] = useState(false);
   const [viewMode, setViewMode] = useState<ViewMode>('grid');
+  const [selectedDoctors, setSelectedDoctors] = useState<string[]>([]);
+  const [sortBy, setSortBy] = useState('newest');
 
   const handleDelete = (id: string) => {
     setDoctors(doctors.filter((doctor) => doctor.id !== id));
+    setSelectedDoctors(selectedDoctors.filter(doctorId => doctorId !== id));
+  };
+
+  const handleSelectAll = (checked: boolean) => {
+    if (checked) {
+      setSelectedDoctors(doctors.map(doctor => doctor.id));
+    } else {
+      setSelectedDoctors([]);
+    }
+  };
+
+  const handleSelectDoctor = (id: string, checked: boolean) => {
+    if (checked) {
+      setSelectedDoctors([...selectedDoctors, id]);
+    } else {
+      setSelectedDoctors(selectedDoctors.filter(doctorId => doctorId !== id));
+    }
   };
 
   const handleAddDoctor = (event: React.FormEvent<HTMLFormElement>) => {
@@ -151,136 +171,145 @@ export function DoctorsView() {
       {viewMode === 'grid' ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {doctors.map((doctor) => (
-            <Card key={doctor.id} className="flex flex-col">
-              <Link href={`/dashboard/doctors/${doctor.id}`} className="flex-grow">
-                <CardContent className="p-6 text-center flex flex-col flex-grow h-full">
-                  <div className="flex justify-between items-start">
-                      <Badge variant={doctor.status === 'Active' ? 'secondary' : 'outline'}>
-                          {doctor.status}
-                      </Badge>
-                      <div></div>
-                  </div>
-                  <Avatar className="w-20 h-20 mx-auto mb-4 mt-2">
+            <Card key={doctor.id} className="flex flex-col relative">
+              <CardContent className="p-6 text-center flex flex-col h-full">
+                <div className="flex justify-start items-start mb-4">
+                  <Badge variant={doctor.status === 'Active' ? 'secondary' : 'outline'}>
+                    {doctor.status}
+                  </Badge>
+                </div>
+                <Link href={`/dashboard/doctors/${doctor.id}`} className="flex-grow flex flex-col">
+                  <Avatar className="w-20 h-20 mx-auto mb-4">
                     <AvatarImage src={doctor.avatarUrl} alt={doctor.name} />
                     <AvatarFallback>{doctor.name.split(' ').map(n => n[0]).join('')}</AvatarFallback>
                   </Avatar>
                   <div className="flex-grow">
-                      <h3 className="text-lg font-semibold">{doctor.name}</h3>
-                      <p className="text-sm text-muted-foreground">{doctor.speciality}</p>
+                    <h3 className="text-lg font-semibold">{doctor.name}</h3>
+                    <p className="text-sm text-muted-foreground">{doctor.speciality}</p>
                   </div>
-                </CardContent>
-              </Link>
-               <div className="p-4 border-t">
+                </Link>
+                <div className="absolute top-4 right-4">
                   <DropdownMenu>
-                      <DropdownMenuTrigger asChild>
-                        <Button variant="ghost" className="w-full justify-end">
-                          <MoreHorizontal className="h-4 w-4" />
-                        </Button>
-                      </DropdownMenuTrigger>
-                      <DropdownMenuContent align="end">
-                        <DropdownMenuItem onClick={() => setEditingDoctor(doctor)}>
-                          Edit
-                        </DropdownMenuItem>
-                        <AlertDialog>
-                            <AlertDialogTrigger asChild>
-                                <DropdownMenuItem onSelect={(e) => e.preventDefault()}>Delete</DropdownMenuItem>
-                            </AlertDialogTrigger>
-                            <AlertDialogContent>
-                                <AlertDialogHeader>
-                                <AlertDialogTitle>Are you sure?</AlertDialogTitle>
-                                <AlertDialogDescription>
-                                    This action cannot be undone. This will permanently delete Dr. {doctor.name}.
-                                </AlertDialogDescription>
-                                </AlertDialogHeader>
-                                <AlertDialogFooter>
-                                <AlertDialogCancel>Cancel</AlertDialogCancel>
-                                <AlertDialogAction onClick={() => handleDelete(doctor.id)}>
-                                    Continue
-                                </AlertDialogAction>
-                                </AlertDialogFooter>
-                            </AlertDialogContent>
-                        </AlertDialog>
-                      </DropdownMenuContent>
-                    </DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Button variant="ghost" size="icon" className="h-8 w-8">
+                        <MoreHorizontal className="h-4 w-4" />
+                      </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end">
+                      <DropdownMenuItem onClick={() => setEditingDoctor(doctor)}>
+                        Edit
+                      </DropdownMenuItem>
+                      <AlertDialog>
+                        <AlertDialogTrigger asChild>
+                          <DropdownMenuItem onSelect={(e) => e.preventDefault()}>Delete</DropdownMenuItem>
+                        </AlertDialogTrigger>
+                        <AlertDialogContent>
+                          <AlertDialogHeader>
+                            <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+                            <AlertDialogDescription>
+                              This action cannot be undone. This will permanently delete Dr. {doctor.name}.
+                            </AlertDialogDescription>
+                          </AlertDialogHeader>
+                          <AlertDialogFooter>
+                            <AlertDialogCancel>Cancel</AlertDialogCancel>
+                            <AlertDialogAction onClick={() => handleDelete(doctor.id)}>
+                              Continue
+                            </AlertDialogAction>
+                          </AlertDialogFooter>
+                        </AlertDialogContent>
+                      </AlertDialog>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
                 </div>
+              </CardContent>
             </Card>
           ))}
         </div>
-      ) : (
-        <Card>
-            <CardContent>
-            <Table>
+        ) : (
+          <Card>
+            <CardContent className="p-0">
+              <Table>
                 <TableHeader>
-                <TableRow>
+                  <TableRow className="bg-muted/50">
+                    <TableHead className="w-12">
+                      <Checkbox
+                        checked={selectedDoctors.length === doctors.length && doctors.length > 0}
+                        onCheckedChange={handleSelectAll}
+                      />
+                    </TableHead>
                     <TableHead>Name</TableHead>
                     <TableHead className="hidden sm:table-cell">Speciality</TableHead>
                     <TableHead className="hidden md:table-cell">Status</TableHead>
-                    <TableHead>
-                    <span className="sr-only">Actions</span>
-                    </TableHead>
-                </TableRow>
+                    <TableHead className="w-24 text-right">Actions</TableHead>
+                  </TableRow>
                 </TableHeader>
                 <TableBody>
-                {doctors.map((doctor) => (
+                  {doctors.map((doctor) => (
                     <TableRow key={doctor.id}>
-                    <TableCell>
+                      <TableCell>
+                        <Checkbox
+                          checked={selectedDoctors.includes(doctor.id)}
+                          onCheckedChange={(checked) => handleSelectDoctor(doctor.id, checked as boolean)}
+                        />
+                      </TableCell>
+                      <TableCell>
                         <div className="flex items-center gap-3">
                           <Link href={`/dashboard/doctors/${doctor.id}`} className="flex items-center gap-3">
-                            <Avatar className="hidden h-9 w-9 sm:flex">
-                                <AvatarImage src={doctor.avatarUrl} alt="Avatar" />
-                                <AvatarFallback>{doctor.name.charAt(0)}</AvatarFallback>
+                            <Avatar className="h-9 w-9">
+                              <AvatarImage src={doctor.avatarUrl} alt="Avatar" />
+                              <AvatarFallback>{doctor.name.charAt(0)}</AvatarFallback>
                             </Avatar>
                             <div className="font-medium">{doctor.name}</div>
                           </Link>
                         </div>
-                    </TableCell>
-                    <TableCell className="hidden sm:table-cell">{doctor.speciality}</TableCell>
-                    <TableCell className="hidden md:table-cell">
+                      </TableCell>
+                      <TableCell className="hidden sm:table-cell">{doctor.speciality}</TableCell>
+                      <TableCell className="hidden md:table-cell">
                         <Badge variant={doctor.status === 'Active' ? 'secondary' : 'outline'}>
-                        {doctor.status}
+                          {doctor.status}
                         </Badge>
-                    </TableCell>
-                    <TableCell>
+                      </TableCell>
+                      <TableCell>
                         <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
+                          <DropdownMenuTrigger asChild>
                             <Button aria-haspopup="true" size="icon" variant="ghost">
-                            <MoreHorizontal className="h-4 w-4" />
-                            <span className="sr-only">Toggle menu</span>
+                              <MoreHorizontal className="h-4 w-4" />
+                              <span className="sr-only">Toggle menu</span>
                             </Button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end">
+                          </DropdownMenuTrigger>
+                          <DropdownMenuContent align="end">
                             <DropdownMenuItem onClick={() => setEditingDoctor(doctor)}>
-                            Edit
+                              Edit
                             </DropdownMenuItem>
                             <AlertDialog>
-                                <AlertDialogTrigger asChild>
-                                    <DropdownMenuItem onSelect={(e) => e.preventDefault()}>Delete</DropdownMenuItem>
-                                </AlertDialogTrigger>
-                                <AlertDialogContent>
-                                    <AlertDialogHeader>
-                                    <AlertDialogTitle>Are you sure?</AlertDialogTitle>
-                                    <AlertDialogDescription>
-                                        This action cannot be undone. This will permanently delete Dr. {doctor.name}.
-                                    </AlertDialogDescription>
-                                    </AlertDialogHeader>
-                                    <AlertDialogFooter>
-                                    <AlertDialogCancel>Cancel</AlertDialogCancel>
-                                    <AlertDialogAction onClick={() => handleDelete(doctor.id)}>
-                                        Continue
-                                    </AlertDialogAction>
-                                    </AlertDialogFooter>
-                                </AlertDialogContent>
+                              <AlertDialogTrigger asChild>
+                                <DropdownMenuItem onSelect={(e) => e.preventDefault()}>Delete</DropdownMenuItem>
+                              </AlertDialogTrigger>
+                              <AlertDialogContent>
+                                <AlertDialogHeader>
+                                  <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+                                  <AlertDialogDescription>
+                                    This action cannot be undone. This will permanently delete Dr. {doctor.name}.
+                                  </AlertDialogDescription>
+                                </AlertDialogHeader>
+                                <AlertDialogFooter>
+                                  <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                  <AlertDialogAction onClick={() => handleDelete(doctor.id)}>
+                                    Continue
+                                  </AlertDialogAction>
+                                </AlertDialogFooter>
+                              </AlertDialogContent>
                             </AlertDialog>
-                        </DropdownMenuContent>
+                          </DropdownMenuContent>
                         </DropdownMenu>
-                    </TableCell>
+                      </TableCell>
                     </TableRow>
-                ))}
+                  ))}
                 </TableBody>
-            </Table>
+              </Table>
             </CardContent>
-        </Card>
-      )}
+          </Card>
+        )}
       
       {/* Edit Doctor Dialog */}
       <Dialog open={!!editingDoctor} onOpenChange={(isOpen) => !isOpen && setEditingDoctor(null)}>

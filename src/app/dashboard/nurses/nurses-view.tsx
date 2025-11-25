@@ -36,8 +36,9 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { nurses as initialNurses, Nurse } from '@/lib/placeholder-data';
-import { MoreHorizontal, PlusCircle, List, LayoutGrid } from 'lucide-react';
+import { MoreHorizontal, PlusCircle, List, LayoutGrid, X, ChevronDown } from 'lucide-react';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { Checkbox } from '@/components/ui/checkbox';
 
 type ViewMode = 'grid' | 'list';
 
@@ -46,9 +47,28 @@ export function NursesView() {
   const [editingNurse, setEditingNurse] = useState<Nurse | null>(null);
   const [isAddDialogOpen, setAddDialogOpen] = useState(false);
   const [viewMode, setViewMode] = useState<ViewMode>('grid');
+  const [selectedNurses, setSelectedNurses] = useState<string[]>([]);
+  const [sortBy, setSortBy] = useState('newest');
 
   const handleDelete = (id: string) => {
     setNurses(nurses.filter((nurse) => nurse.id !== id));
+    setSelectedNurses(selectedNurses.filter(nurseId => nurseId !== id));
+  };
+
+  const handleSelectAll = (checked: boolean) => {
+    if (checked) {
+      setSelectedNurses(nurses.map(nurse => nurse.id));
+    } else {
+      setSelectedNurses([]);
+    }
+  };
+
+  const handleSelectNurse = (id: string, checked: boolean) => {
+    if (checked) {
+      setSelectedNurses([...selectedNurses, id]);
+    } else {
+      setSelectedNurses(selectedNurses.filter(nurseId => nurseId !== id));
+    }
   };
 
   const handleAddNurse = (event: React.FormEvent<HTMLFormElement>) => {
@@ -199,75 +219,85 @@ export function NursesView() {
         </div>
       ) : (
         <Card>
-            <CardContent>
+          <CardContent className="p-0">
             <Table>
-                <TableHeader>
-                <TableRow>
-                    <TableHead>Name</TableHead>
-                    <TableHead className="hidden sm:table-cell">Department</TableHead>
-                    <TableHead className="hidden md:table-cell">Status</TableHead>
-                    <TableHead>
-                    <span className="sr-only">Actions</span>
-                    </TableHead>
+              <TableHeader>
+                <TableRow className="bg-muted/50">
+                  <TableHead className="w-12">
+                    <Checkbox
+                      checked={selectedNurses.length === nurses.length && nurses.length > 0}
+                      onCheckedChange={handleSelectAll}
+                    />
+                  </TableHead>
+                  <TableHead>Name</TableHead>
+                  <TableHead className="hidden sm:table-cell">Department</TableHead>
+                  <TableHead className="hidden md:table-cell">Status</TableHead>
+                  <TableHead className="w-24 text-right">Actions</TableHead>
                 </TableRow>
-                </TableHeader>
-                <TableBody>
+              </TableHeader>
+              <TableBody>
                 {nurses.map((nurse) => (
-                    <TableRow key={nurse.id}>
-                    <TableCell>
+                  <TableRow key={nurse.id}>
+                      <TableCell>
+                        <Checkbox
+                          checked={selectedNurses.includes(nurse.id)}
+                          onCheckedChange={(checked) => handleSelectNurse(nurse.id, checked as boolean)}
+                        />
+                      </TableCell>
+                      <TableCell>
                         <div className="flex items-center gap-3">
-                        <Avatar className="hidden h-9 w-9 sm:flex">
+                          <Avatar className="h-9 w-9">
                             <AvatarImage src={nurse.avatarUrl} alt="Avatar" />
                             <AvatarFallback>{nurse.name.charAt(0)}</AvatarFallback>
-                        </Avatar>
-                        <div className="font-medium">{nurse.name}</div>
+                          </Avatar>
+                          <div className="font-medium">{nurse.name}</div>
                         </div>
-                    </TableCell>
-                    <TableCell className="hidden sm:table-cell">{nurse.department}</TableCell>
-                    <TableCell className="hidden md:table-cell">
+                      </TableCell>
+                      <TableCell className="hidden sm:table-cell">{nurse.department}</TableCell>
+                      <TableCell className="hidden md:table-cell">
                         <Badge variant={nurse.status === 'Active' ? 'secondary' : 'outline'}>
-                        {nurse.status}
+                          {nurse.status}
                         </Badge>
-                    </TableCell>
-                    <TableCell>
+                      </TableCell>
+                      <TableCell>
                         <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
+                          <DropdownMenuTrigger asChild>
                             <Button aria-haspopup="true" size="icon" variant="ghost">
-                            <MoreHorizontal className="h-4 w-4" />
-                            <span className="sr-only">Toggle menu</span>
+                              <MoreHorizontal className="h-4 w-4" />
+                              <span className="sr-only">Toggle menu</span>
                             </Button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end">
+                          </DropdownMenuTrigger>
+                          <DropdownMenuContent align="end">
                             <DropdownMenuItem onClick={() => setEditingNurse(nurse)}>
-                            Edit
+                              Edit
                             </DropdownMenuItem>
                             <AlertDialog>
-                                <AlertDialogTrigger asChild>
-                                    <DropdownMenuItem onSelect={(e) => e.preventDefault()}>Delete</DropdownMenuItem>
-                                </AlertDialogTrigger>
-                                <AlertDialogContent>
-                                    <AlertDialogHeader>
-                                    <AlertDialogTitle>Are you sure?</AlertDialogTitle>
-                                    <AlertDialogDescription>
-                                        This action cannot be undone. This will permanently delete nurse {nurse.name}.
-                                    </AlertDialogDescription>
-                                    </AlertDialogHeader>
-                                    <AlertDialogFooter>
-                                    <AlertDialogCancel>Cancel</AlertDialogCancel>
-                                    <AlertDialogAction onClick={() => handleDelete(nurse.id)}>
-                                        Continue
-                                    </AlertDialogAction>
-                                    </AlertDialogFooter>
-                                </AlertDialogContent>
+                              <AlertDialogTrigger asChild>
+                                <DropdownMenuItem onSelect={(e) => e.preventDefault()}>Delete</DropdownMenuItem>
+                              </AlertDialogTrigger>
+                              <AlertDialogContent>
+                                <AlertDialogHeader>
+                                  <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+                                  <AlertDialogDescription>
+                                    This action cannot be undone. This will permanently delete nurse {nurse.name}.
+                                  </AlertDialogDescription>
+                                </AlertDialogHeader>
+                                <AlertDialogFooter>
+                                  <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                  <AlertDialogAction onClick={() => handleDelete(nurse.id)}>
+                                    Continue
+                                  </AlertDialogAction>
+                                </AlertDialogFooter>
+                              </AlertDialogContent>
                             </AlertDialog>
-                        </DropdownMenuContent>
+                          </DropdownMenuContent>
                         </DropdownMenu>
-                    </TableCell>
-                    </TableRow>
+                      </TableCell>
+                  </TableRow>
                 ))}
-                </TableBody>
+              </TableBody>
             </Table>
-            </CardContent>
+          </CardContent>
         </Card>
       )}
       
