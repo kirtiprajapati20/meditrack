@@ -1,6 +1,9 @@
+'use client'
+
 import { Button } from '@/components/ui/button'
 import { Stethoscope } from 'lucide-react'
 import Link from 'next/link'
+import { DotLottieReact } from '@lottiefiles/dotlottie-react'
 
 export default function Home() {
   return (
@@ -35,8 +38,12 @@ export default function Home() {
                <div className="w-full max-w-md mx-auto">
                  <div className="relative aspect-square rounded-xl overflow-hidden shadow-2xl">
                     <div className="absolute inset-0 bg-gradient-to-tr from-primary/20 via-accent/20 to-secondary/20"></div>
-                     <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
-                       <Stethoscope className="w-32 h-32 text-primary opacity-60" strokeWidth={1}/>
+                     <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[300px] flex items-center justify-center">
+                     <DotLottieReact
+      src="https://lottie.host/32c1f50d-4a60-438b-a2cb-e2398aa97288/zCAGDakmLE.lottie"
+      loop
+      autoplay
+    />
                      </div>
                       <div className="absolute inset-4 border-2 border-primary/20 rounded-lg"></div>
                  </div>

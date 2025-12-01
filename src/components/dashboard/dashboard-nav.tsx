@@ -37,7 +37,7 @@ const menuItems: NavItem[] = [
   { href: '/dashboard/doctors', icon: UserCog, label: 'Doctors' },
   { href: '/dashboard/nurses', icon: UserPlus, label: 'Nurses' },
   { href: '/dashboard/appointments', icon: Calendar, label: 'Appointments' },
-  { href: '/dashboard/diagnosis', icon: Stethoscope, label: 'Diagnosis Tool' },
+  { href: '/dashboard/diagnosis', icon: HeartPulse, label: 'Diagnosis Tool' },
   { href: '/dashboard/inventory', icon: Boxes, label: 'Inventory' },
   { href: '/dashboard/billing', icon: FileText, label: 'Billing' },
   { href: '/dashboard/users', icon: Shield, label: 'Staff Roles' },
@@ -87,7 +87,7 @@ export function DashboardNav() {
     <Sidebar className="bg-white border-r">
      <SidebarHeader>
         <div className="flex items-center gap-2 p-2">
-          <HeartPulse className="w-7 h-7 text-primary" />
+          <Stethoscope className="w-7 h-7 text-primary" />
           <h2 className="text-xl font-bold tracking-tight">MediTrack</h2>
         </div>
       </SidebarHeader>
